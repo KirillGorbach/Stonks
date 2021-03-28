@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Stonks</string>
+    <string name="action_settings">Settings</string>
+    <string name="stocks">Stocks</string>
+    <string name="favorites">Favorites</string>
+    <string name="search">search…</string>
+    <string name="loading">Loading</string>
+    <string name="no_stocks_found">No stocks found</string>
+</resources>
