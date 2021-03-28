@@ -1,37 +1,46 @@
 package com.example.stonks
 
+import android.graphics.Bitmap
+import android.os.Environment
 import android.util.Log
 import androidx.lifecycle.*
 import com.example.stonks.api.getImage
+import com.example.stonks.api.getImageFromResourses
 import com.example.stonks.api.getStocks
+import com.example.stonks.database.AppDatabase
+import com.example.stonks.database.icons.IconEntity
+import com.example.stonks.database.tickers.FavoriteTickerEntity
 import com.example.stonks.util.*
 import kotlinx.coroutines.*
-import java.lang.Exception
+import java.io.ByteArrayOutputStream
+import java.io.File
+import java.io.FileOutputStream
+import kotlin.Exception
 
 class MainActivityViewModel : ViewModel() {
 
 
-
+    // флаг загрузки данных
     var dataLoaded = MutableLiveData<Boolean>()
+    // буфер из тех акций, которые должны быть на экране в данный момент
     var searchData = MutableLiveData<Array<Stock>>()
+    // все акции, что имеет приложение
     var data = MutableLiveData<Array<Stock>>()
 
+    var database = AppDatabase.getAppDatabase(MainActivity.applicationContext())
 
-
-    var favTickersList = mutableListOf<String>()
+    // чтобы не вводить строку много раз, viewModel хранит её
     var currentSearchString = ""
+    // набор фильтров, по которым формируется searchData
     var searchState = SearchState.ALL
 
     init {
         dataLoaded.value = false
         fetchData()
-        initImages()
-        //defineFav(favTickersList)
-        dataLoaded.value = true
     }
 
 
-
+    // асинхронная загрузка списка акций
     fun fetchData() {
         GlobalScope.launch(Dispatchers.Default) {
             var stocks: Array<Stock>? = null
@@ -46,119 +55,167 @@ class MainActivityViewModel : ViewModel() {
             withContext(Dispatchers.Main) {
                 data.value = stocks
                 setSearchData(SearchState.ALL)
+                // остальное можно загрузить потом
+                dataLoaded.value = true
+                initFavorites()
+                initImages()
             }
         }
     }
 
+    /*
+        делаем снимок основных данных, затем для каждого тикера
+        пробуем найти иконку в хранилище, если не нашли - скачиваем
+        и сохраняем
+        в БД хранятся пути к файлам с иконками
+     */
     private fun initImages() {
         GlobalScope.launch(Dispatchers.Default) {
-            val oldData = data.value
-            Log.i("IMAGELOAD", "Loading start")
-            oldData?.forEach {
-                Log.i("IMAGELOAD", "Loading ${it.ticker}")
-                val image = getImage(it.ticker)
+            val oldData = data.value?.map { it->it.ticker }?.toTypedArray()
+            val icons = database?.iconDao()?.getIcons()
+            oldData?.forEach { ticker->
+                var image: Bitmap? = null
+                var loadedFromStorage = false
+
+                icons?.forEach {
+                    if (it.ticker==ticker) {
+                        image = getImageFromResourses(it.source)
+                        image?.let { loadedFromStorage = true }
+                    }
+                }
+                if(!loadedFromStorage) {
+                    image = getImage(ticker)
+                    cacheImage(ticker, image)
+                }
 
                 withContext(Dispatchers.Main) {
-                    data.value = data.value?.map { stock ->
-                        if(stock.ticker==it.ticker)
-                            stock.image = image
-                        stock
+                    data.value = data.value?.map {
+                        if(it.ticker==ticker) {
+                            it.image = image
+                        }
+                        it
                     }?.toTypedArray()
-                    Log.i("IMAGELOAD", it.ticker)
                 }
             }
-
         }
     }
 
-    /*fun defineFav(tickersList: MutableList<String>) {
 
-//        if (tickersList.isNotEmpty()) {
-//            favTickersList = tickersList
-//            data.value = data.value?.map { stock ->
-//                tickersList.find { it == stock.ticker }
-//                    ?.let { stock.isFavorite = true }
-//                stock
-//            }?.toTypedArray()
-//        }
-    }*/
-
-    fun toggleFav(ticker: String) {
-        searchData.value = filterToggleFav(searchData.value, ticker)
+    /*
+        пишем битмап в файл, затем сохраняем uri файла
+        в базу данных
+     */
+    private fun cacheImage(ticker: String, image: Bitmap?) {
+        image?.let {
+            GlobalScope.launch(Dispatchers.Default) {
+                if (Environment.getExternalStorageState() == Environment.MEDIA_MOUNTED) {
+                    try {
+                        val file =
+                            File(MainActivity.applicationContext().filesDir, "$ticker.bitmap")
+                        file.createNewFile()
+                        if (file.exists()) {
+                            val byteOutputStream = ByteArrayOutputStream()
+                            image.compress(Bitmap.CompressFormat.PNG, 0, byteOutputStream)
+                            val bitmapData = byteOutputStream.toByteArray()
+                            with(FileOutputStream(file)) {
+                                write(bitmapData)
+                                flush()
+                                close()
+                            }
+                            val iconsDao = database?.iconDao()
+                            iconsDao?.insertIcon(
+                                IconEntity(
+                                    ticker = ticker,
+                                    source = file.toURI().toString()
+                                )
+                            )
+                        }
+                    } catch (ex: Exception) {
+                        ex.message?.let { it1 -> Log.e("IMAGELOAD", it1) }
+                    }
+                }
+            }
+        }
     }
 
+
+    /*
+        ищем тикеры избранных в БД
+
+     */
+    private fun initFavorites() {
+        GlobalScope.launch(Dispatchers.Default) {
+            val favDao = database?.favoriteTickerDao()
+//            val dbTickers = favDao?.getFavorites()
+//            withContext(Dispatchers.Main) {
+//                data.value = data.value?.map { stock ->
+//                    if(dbTickers?.find { it.ticker==stock.ticker }!=null)
+//                        stock.isFavorite=true
+//                    stock
+//                }?.toTypedArray()
+//            } TODO TEST IT
+
+            favDao?.getFavorites()?.forEach { tickerEntity ->
+                withContext(Dispatchers.Main) {
+                    data.value = data.value?.map {
+                        if (it.ticker==tickerEntity.ticker)
+                            it.isFavorite=true
+                        it
+                    }?.toTypedArray()
+                }
+            }
+        }
+    }
+
+    // добавляем или удаляем тикер из таблицы избранных
+    private fun saveFavTickerState(ticker: String, state: Boolean) {
+        GlobalScope.launch(Dispatchers.Default) {
+            val favDao = database?.favoriteTickerDao()
+            if(state) {
+                favDao?.insertTicker(FavoriteTickerEntity(ticker = ticker))
+            } else {
+                favDao?.deleteTicker(ticker)
+            }
+        }
+    }
+
+    fun deleteDB() {
+        AppDatabase.destroyDatabase()
+    }
+    fun reinitDB() {
+        database = AppDatabase.getAppDatabase(MainActivity.applicationContext())
+    }
+
+    /*
+        обработка нажатия на кнопку акции "избранное"
+        добавляет или удаляет акцию из избранного
+     */
+    fun toggleFav(ticker: String) {
+        searchData.value = data.value?.map {
+            if (it.ticker == ticker){
+                it.isFavorite = it.isFavorite!=true
+                saveFavTickerState(ticker, it.isFavorite)
+            }
+            it
+        }?.toTypedArray()
+    }
+
+    // устанавливаем фильтрацию данных
     fun setSearchData(state: SearchState) {
-        searchState = state
         when(state) {
             SearchState.ALL -> searchData.value = filterNoFilter(data.value)
             SearchState.FAVORITE -> searchData.value = filterDataFav(data.value)
             SearchState.SEARCH -> searchData.value = filterDataAll(data.value, currentSearchString)
+            SearchState.SEARCH_FAV -> searchData.value = filterDataAll(filterDataFav(data.value), currentSearchString)
         }
+        searchState = state
     }
 
     enum class SearchState {
-        ALL,
-        FAVORITE,
-        SEARCH
+        ALL,        // все акции
+        FAVORITE,   // только избранные
+        SEARCH,     // совпадают со строкой поиска
+        SEARCH_FAV  // только избранные + совпадают со строкой поиска
     }
 
 }
-
-
-/*
-    fun saveFav() {
-        GlobalScope.launch(Dispatchers.Default) {
-            val favList = data.value?.filter {
-                it.isFavorite
-            }?.map { it.ticker }?.toTypedArray()
-
-            if (Environment.getExternalStorageState() == Environment.MEDIA_MOUNTED) {
-                val file = File(Environment.getExternalStorageDirectory(), fileName)
-                favList?.joinToString(" ")?.let { Log.i("WRITE", it) }
-
-                if (file.exists()){
-                    favList?.joinToString(" ")?.let { Log.i("WRITE", it) }
-                    file.printWriter().use { out->
-                        favList?.forEach { out.println(it) }
-                    }
-                } else {
-                    try {
-                        file.createNewFile()
-
-                        file.printWriter().use { out->
-                            favList?.forEach { out.println(it) }
-                        }
-                    } catch (ex: Exception) {
-                        Log.i("FILE", "Unable to create file $fileName")
-                    }
-                }
-
-            }
-        }
-    }
-
-    private fun getFavFromFile() {
-
-        GlobalScope.launch(Dispatchers.Default) {
-            if (Environment.getExternalStorageState() == Environment.MEDIA_MOUNTED) {
-                val tickersList = mutableListOf<String>()
-
-                val file = File(Environment.getExternalStorageDirectory(), fileName)
-                Log.i("READFILE", tickersList.toString())
-                if (file.exists()){
-                    file.inputStream().bufferedReader()
-                            .forEachLine { tickersList.add(it) }
-                    Log.i("READFILE", tickersList.joinToString(" "))
-
-                    withContext(Dispatchers.Main) {
-                        data.value = data.value?.map { stock ->
-                            tickersList.find { it==stock.ticker }
-                                    ?.let { stock.isFavorite = true }
-                            stock
-                        }?.toTypedArray()
-                    }
-                }
-            }
-        }
-    }
-*/

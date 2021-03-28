@@ -3,9 +3,12 @@ package com.example.stonks.api
 
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.net.Uri
 import android.util.Log
+import com.example.stonks.MainActivity
 import com.example.stonks.constants.mostActivesList
-import com.example.stonks.constants.myAPIKey
+import com.example.stonks.constants.myMBOUMAPIKey
+import com.example.stonks.util.News
 import com.example.stonks.util.Stock
 import java.lang.Exception
 import java.net.HttpURLConnection
@@ -13,27 +16,32 @@ import java.net.URL
 
 
 
+// Загружаем битмап-изображение с финхаба
 fun getImage(ticker: String): Bitmap? {
-    val url = "https://finnhub.io/api/v1/stock/profile2?" +
-            "symbol=$ticker&token=c191shn48v6rd7oudbjg"
-
 
     return try {
-//        val data = URL(url).readText()
-//        Log.i("IMAGELOAD", data)
-//        val imageURL = ProfileResp(data).data
-
-
         val connection = URL("https://finnhub.io/api/logo?symbol=$ticker")
             .openConnection() as HttpURLConnection
         connection.doInput = true
         connection.connect()
         val input = connection.inputStream
-        Log.w("IMAGELOAD", "Loaded $ticker icon successfully")
         BitmapFactory.decodeStream(input)
     } catch (ex: Exception) {
         Log.w("IMAGELOAD", "Unable to load $ticker icon")
         Log.e("IMAGELOAD", ex.toString())
+        null
+    }
+}
+
+// достаём картинку из файла
+fun getImageFromResourses(fileUri: String): Bitmap? {
+    return try {
+        val uri: Uri = Uri.parse(fileUri)
+        val stream = MainActivity.applicationContext().contentResolver.openInputStream(uri)
+        val bitmap = BitmapFactory.decodeStream(stream)
+        stream?.close()
+        bitmap
+    } catch (ex:Exception) {
         null
     }
 }
@@ -50,7 +58,7 @@ fun getImage(ticker: String): Bitmap? {
 fun getStocks(): Array<Stock>? {
 
     val urlActives = "https://mboum.com/api/v1/co/collections/?list=$mostActivesList" +
-            "&start=1&apikey=$myAPIKey"
+            "&start=1&apikey=$myMBOUMAPIKey"
 
     val resActives: String
 
@@ -84,3 +92,15 @@ val resLosers = URL(urlLosers).readText()
 
     val stocks = (activeStocks+gainersStocks+losersStocks).distinctBy { it.ticker }
 */
+
+fun getNews(ticker: String): Array<News>? {
+    val url = "https://mboum.com/api/v1/ne/news/?symbol=$ticker&apikey=$myMBOUMAPIKey"
+
+    return try {
+        val responce = URL(url).readText()
+        NewsListResp(responce).data
+    } catch (ex: Exception) {
+        Log.w("NEWS", "Could not load news list for $ticker")
+        null
+    }
+}

@@ -1,4 +1,4 @@
-package com.example.stonks.database
+package com.example.stonks.database.tickers
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

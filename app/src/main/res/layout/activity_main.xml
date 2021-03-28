@@ -17,10 +17,9 @@
         <com.google.android.material.appbar.CollapsingToolbarLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_scrollFlags="scroll|snap">
-
+            app:layout_scrollFlags="scroll|snap"
+            android:background="@color/design_default_color_primary_variant">
                 <SearchView
-                    android:background="@color/design_default_color_primary_variant"
                     android:id="@+id/search_input"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -32,29 +31,35 @@
                     android:singleLine="true"
                     android:textColor="@color/black"
                     android:iconifiedByDefault="false"
-                    android:textSize="@dimen/search_text_size"/>
+                    android:textSize="@dimen/search_text_size"
+                    android:layout_marginTop="@dimen/search_top_margin"/>
         </com.google.android.material.appbar.CollapsingToolbarLayout>
 
         <androidx.appcompat.widget.Toolbar
-            android:layout_marginTop="30dp"
+            android:id="@+id/toolbar"
+
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_scrollFlags="scroll|enterAlways">
-            <TextView
-                android:id="@+id/all_stocks_label"
+            app:layout_scrollFlags="enterAlwaysCollapsed">
+            <Button
+                android:id="@+id/all_stocks_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/text_margin"
+                android:layout_margin="@dimen/main_buttons_margin"
                 android:text="@string/stocks"
-                android:textColor="@color/black" />
+                android:textColor="@color/black"
+                android:background="@color/transparent"
+                android:textAppearance="@style/Theme.MyBotton"/>
 
-            <TextView
-                android:id="@+id/favorite_label"
+            <Button
+                android:id="@+id/favorite_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/text_margin"
+                android:layout_margin="@dimen/main_buttons_margin"
                 android:text="@string/favorites"
-                android:textColor="@color/grey"/>
+                android:textColor="@color/grey"
+                android:background="@color/transparent"
+                android:textAppearance="@style/Theme.MyBotton"/>
         </androidx.appcompat.widget.Toolbar>
 
     </com.google.android.material.appbar.AppBarLayout>
@@ -76,8 +81,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        >
+        android:layout_height="match_parent">
 
         <TextView
             android:id="@+id/loading_label"
@@ -103,6 +107,12 @@
             android:textColor="@color/warning_info_text_color"
             android:visibility="gone"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+<!--    <fragment-->
+<!--        android:id="@+id/info_fragment"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent"-->
+<!--        class="com.example.stonks.fragments.StockInfoFragment"/>-->
 
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

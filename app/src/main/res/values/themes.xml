@@ -14,6 +14,11 @@
         <!-- Customize your theme here. -->
     </style>
 
+    <style name="Theme.MyBotton" parent="@style/TextAppearance.AppCompat.Large"/>
+    <style name="Theme.ListItem.Ticker" parent="@style/TextAppearance.AppCompat.Light.SearchResult.Title"/>
+    <style name="Theme.ListItem.CompanyName" parent="@style/TextAppearance.AppCompat.Small"/>
+    <style name="Theme.ListItem.Price" parent="@style/TextAppearance.AppCompat.Subhead"/>
+
     <style name="Theme.Stonks.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>

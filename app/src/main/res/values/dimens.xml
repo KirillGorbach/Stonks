@@ -4,6 +4,9 @@
     <dimen name="stock_list_top_margin">10dp</dimen>
     <dimen name="text_margin">16dp</dimen>
 
+    <dimen name="main_buttons_margin">10dp</dimen>
+    <dimen name="search_top_margin">10dp</dimen>
+
     <dimen name="search_text_size">15sp</dimen>
 
     <dimen name="favorite_btn_side">30dp</dimen>
@@ -17,6 +20,10 @@
     <dimen name="icon_side">45dp</dimen>
     <dimen name="icon_round_corner">8dp</dimen>
     <dimen name="list_item_round_corner">8dp</dimen>
+    <dimen name="news_item_round_corner">8dp</dimen>
 
     <dimen name="list_item_margin">3dp</dimen>
+
+    <dimen name="back_arrow_margin">10dp</dimen>
+    <dimen name="back_arrow_side">40dp</dimen>
 </resources>

@@ -1,4 +1,3 @@
 package com.example.stonks.util
 
-class News {
-}
+data class News(val title: String, val link: String)

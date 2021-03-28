@@ -1,5 +1,8 @@
 package com.example.stonks.util
 
+
+
+// регистронезависимый поиск по тикеру и имени компании
 fun filterDataAll(data: Array<Stock>?, searchStr: String): Array<Stock>?  =
     data?.filter {
         val regex = Regex(searchStr, RegexOption.IGNORE_CASE)
@@ -7,19 +10,11 @@ fun filterDataAll(data: Array<Stock>?, searchStr: String): Array<Stock>?  =
                 regex.find(it.ticker)!=null
     }?.toTypedArray()
 
-
+// только избранные
 fun filterDataFav(data: Array<Stock>?): Array<Stock>? =
         data?.filter { it.isFavorite }?.toTypedArray()
 
 fun filterNoFilter(data: Array<Stock>?): Array<Stock>? = data
-
-fun filterToggleFav(data: Array<Stock>?, ticker: String): Array<Stock>? =
-    data?.map {
-        if (it.ticker == ticker){
-            it.isFavorite = it.isFavorite!=true
-        }
-        it
-    }?.toTypedArray()
 
 
 
