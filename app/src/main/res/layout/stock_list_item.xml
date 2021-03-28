@@ -35,26 +35,28 @@
             </androidx.cardview.widget.CardView>
 
             <TextView
+                android:text="AAPL"
+                android:textAppearance="@style/Theme.ListItem.Ticker"
                 android:id="@+id/ticker"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/text_margin"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintLeft_toRightOf="@id/cardview_icon"
-                android:textAppearance="?attr/textAppearanceListItem" />
+                app:layout_constraintLeft_toRightOf="@id/cardview_icon"/>
 
             <TextView
+                android:text="Apple Inc."
+                android:textAppearance="@style/Theme.ListItem.CompanyName"
                 android:id="@+id/co_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/text_margin"
                 app:layout_constraintTop_toBottomOf="@id/ticker"
                 app:layout_constraintLeft_toRightOf="@id/cardview_icon"
-                app:layout_constraintBottom_toBottomOf="parent"
-                android:textAppearance="?attr/textAppearanceListItemSecondary" />
+                app:layout_constraintBottom_toBottomOf="parent"/>
 
             <ImageButton
-                android:id="@+id/favorite_btn"
+                android:id="@+id/change_favorite_btn"
                 style="@android:style/Widget.ImageButton"
                 android:layout_width="@dimen/favorite_btn_side"
                 android:layout_height="@dimen/favorite_btn_side"
@@ -63,7 +65,7 @@
                 android:background="@color/transparent"
                 android:cropToPadding="true"
                 android:scaleType="centerCrop"
-                android:src="@android:drawable/radiobutton_on_background"
+                android:src="@drawable/star_big_on"
                 android:tint="@android:color/transparent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
@@ -72,14 +74,19 @@
 
 
             <TextView
+                android:text="+0.01$"
+                android:textColor="@color/green"
+                android:textAppearance="@style/Theme.ListItem.Price"
                 android:id="@+id/delta"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_constraintRight_toLeftOf="@id/favorite_btn"
+                app:layout_constraintRight_toLeftOf="@id/change_favorite_btn"
                 app:layout_constraintBottom_toBottomOf="parent"
                 android:layout_margin="@dimen/text_margin"/>
 
             <TextView
+                android:text="199.99$"
+                android:textAppearance="@style/Theme.ListItem.Price"
                 android:id="@+id/price"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
