@@ -6,11 +6,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
 import com.example.stonks.MainActivity
 import com.example.stonks.MainActivityViewModel
 import com.example.stonks.R
-import com.example.stonks.fragments.ActivityFragmentListener
 import com.example.stonks.fragments.main.util.StockRecyclerViewAdapter
 import com.example.stonks.util.MainContentHolder
 
