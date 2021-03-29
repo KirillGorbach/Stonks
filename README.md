@@ -35,7 +35,7 @@
 
 
 
-[Папка со скриншотами готовой программы](https://cloud.mail.ru/public/k2MG/BJPahPkkZ)
+[Папка со скриншотами готовой программы и apk](https://cloud.mail.ru/public/k2MG/BJPahPkkZ)
 
 ВНИМАНИЕ!!! Из-за ограничений бесплатной подписки mboum просмотр новостей доступен только для акций AAPL (Apple Inc.) и F (Ford motor company)
 
