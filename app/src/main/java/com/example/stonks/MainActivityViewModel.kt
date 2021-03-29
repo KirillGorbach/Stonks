@@ -1,5 +1,7 @@
 package com.example.stonks
 
+import android.app.Application
+import android.content.Context
 import android.graphics.Bitmap
 import android.os.Environment
 import android.util.Log
@@ -18,7 +20,7 @@ import java.io.File
 import java.io.FileOutputStream
 import kotlin.Exception
 
-class MainActivityViewModel : ViewModel() {
+class MainActivityViewModel(application: Application) : AndroidViewModel(application) {
 
 
     // флаг загрузки данных
@@ -28,7 +30,7 @@ class MainActivityViewModel : ViewModel() {
     // все акции, что имеет приложение
     var data = MutableLiveData<Array<Stock>>()
 
-    var database = AppDatabase.getAppDatabase(MainActivity.applicationContext())
+    var database = AppDatabase.getAppDatabase(getApplication())
 
     // чтобы не вводить строку много раз, viewModel хранит её
     var currentSearchString = ""
@@ -55,7 +57,7 @@ class MainActivityViewModel : ViewModel() {
             }
             withContext(Dispatchers.Main) {
                 data.value = stocks
-                setSearchData(SearchState.ALL)
+                setSearchData(searchState)
                 // остальное можно загрузить потом
                 dataLoaded.value = true
                 initFavorites()
@@ -80,7 +82,7 @@ class MainActivityViewModel : ViewModel() {
 
                 icons?.forEach {
                     if (it.ticker==ticker) {
-                        image = getImageFromResourses(it.source)
+                        image = getImageFromResourses(getApplication() as Context, it.source)
                         image?.let { loadedFromStorage = true }
                     }
                 }
@@ -112,7 +114,7 @@ class MainActivityViewModel : ViewModel() {
                 if (Environment.getExternalStorageState() == Environment.MEDIA_MOUNTED) {
                     try {
                         val file =
-                            File(MainActivity.applicationContext().filesDir, "$ticker.bitmap")
+                            File((getApplication()as Context).filesDir, "$ticker.bitmap")
                         file.createNewFile()
                         if (file.exists()) {
                             val byteOutputStream = ByteArrayOutputStream()

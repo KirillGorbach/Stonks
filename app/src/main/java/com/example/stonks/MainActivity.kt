@@ -7,7 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.example.stonks.fragments.ActivityFragmentListener
 import com.example.stonks.fragments.main.MainFragment
-import com.example.stonks.fragments.stockInfo.NewsFragment
+import com.example.stonks.fragments.news.NewsFragment
 
 class MainActivity : AppCompatActivity(),
 ActivityFragmentListener{
@@ -23,49 +23,48 @@ ActivityFragmentListener{
     companion object {
         @SuppressLint("StaticFieldLeak")
         private var instance: MainActivity? = null
-        fun applicationContext() : Context {
-            return instance!!.applicationContext
-        }
+        fun getFragmentListener(): ActivityFragmentListener =
+            instance as ActivityFragmentListener
     }
 
-    var mainFragment: MainFragment? = null
-    val mainFragmentTag = "MainFragment"
-    var newsFragment: NewsFragment? = null
-    val newsFragmentTag = "NewsFragment"
+    private val mainFragmentTag = "MainFragment"
+    private val newsFragmentTag = "NewsFragment"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        mainFragment = MainFragment(this as ActivityFragmentListener)
 
         if (savedInstanceState==null) {
             supportFragmentManager.beginTransaction()
-                .add(R.id.container, mainFragment!!, mainFragmentTag)
+                .add(R.id.container, MainFragment(), mainFragmentTag)
                 .commit()
         }
     }
 
+    // если мы в новостях, возвращаемся на главный
+    override fun onBackPressed() {
+        val manager = supportFragmentManager
+        if (manager.findFragmentByTag(newsFragmentTag)!=null)
+            backToMainFragment()
+        else
+            super.onBackPressed()
+    }
+
     override fun startNewsFragment(ticker: String) {
-        newsFragment = supportFragmentManager.findFragmentByTag(newsFragmentTag)?.let {
-            supportFragmentManager.findFragmentByTag(newsFragmentTag) as NewsFragment
-        }
-        if(newsFragment == null) {
-            newsFragment = NewsFragment(this as ActivityFragmentListener, ticker)
-            supportFragmentManager.beginTransaction()
-                .replace(R.id.container, newsFragment!!, newsFragmentTag)
+        if(supportFragmentManager.findFragmentByTag(newsFragmentTag) == null) {
+            val manager = supportFragmentManager
+            manager.beginTransaction()
+                .replace(R.id.container, NewsFragment(ticker), newsFragmentTag)
                 .commit()
         }
     }
 
     override fun backToMainFragment() {
-        mainFragment = supportFragmentManager.findFragmentByTag(mainFragmentTag)?.let {
-            supportFragmentManager.findFragmentByTag(mainFragmentTag) as MainFragment
-        }
-        if(mainFragment == null) {
-            mainFragment = MainFragment(this as ActivityFragmentListener)
-            supportFragmentManager.beginTransaction()
-                .replace(R.id.container, mainFragment!!, mainFragmentTag)
+        if(supportFragmentManager.findFragmentByTag(mainFragmentTag) == null) {
+            val manager = supportFragmentManager
+            manager.beginTransaction()
+                .replace(R.id.container, MainFragment(), mainFragmentTag)
                 .commit()
         }
     }

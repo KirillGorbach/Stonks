@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
+import com.example.stonks.MainActivity
 import com.example.stonks.MainActivityViewModel
 import com.example.stonks.R
 import com.example.stonks.fragments.ActivityFragmentListener
@@ -14,9 +15,7 @@ import com.example.stonks.fragments.main.util.StockRecyclerViewAdapter
 import com.example.stonks.util.MainContentHolder
 
 
-class MainFragment(
-    private val activityFragmentListener: ActivityFragmentListener
-): Fragment(),
+class MainFragment: Fragment(),
         StockRecyclerViewAdapter.OnStockClickedListener{
 
     lateinit var mainContentHolder: MainContentHolder
@@ -26,6 +25,7 @@ class MainFragment(
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
+        retainInstance = true
         viewMain = inflater.inflate(R.layout.fragment_main, container, false)
 
         if (activity!=null && context!=null) {
@@ -89,6 +89,6 @@ class MainFragment(
     }
 
     override fun onStockClicked(ticker: String) {
-        activityFragmentListener.startNewsFragment(ticker)
+        MainActivity.getFragmentListener().startNewsFragment(ticker)
     }
 }

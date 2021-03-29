@@ -1,6 +1,7 @@
 package com.example.stonks.api
 
 
+import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
@@ -8,7 +9,7 @@ import android.util.Log
 import com.example.stonks.MainActivity
 import com.example.stonks.constants.mostActivesList
 import com.example.stonks.constants.myMBOUMAPIKey
-import com.example.stonks.fragments.stockInfo.util.News
+import com.example.stonks.fragments.news.util.News
 import com.example.stonks.fragments.main.util.Stock
 import java.lang.Exception
 import java.net.HttpURLConnection
@@ -34,10 +35,10 @@ fun getImage(ticker: String): Bitmap? {
 }
 
 // достаём картинку из файла
-fun getImageFromResourses(fileUri: String): Bitmap? {
+fun getImageFromResourses(appContext: Context, fileUri: String): Bitmap? {
     return try {
         val uri: Uri = Uri.parse(fileUri)
-        val stream = MainActivity.applicationContext().contentResolver.openInputStream(uri)
+        val stream = appContext.contentResolver.openInputStream(uri)
         val bitmap = BitmapFactory.decodeStream(stream)
         stream?.close()
         bitmap
@@ -97,8 +98,8 @@ fun getNews(ticker: String): Array<News>? {
     val url = "https://mboum.com/api/v1/ne/news/?symbol=$ticker&apikey=$myMBOUMAPIKey"
 
     return try {
-        val responce = URL(url).readText()
-        NewsListResp(responce).data
+        val response = URL(url).readText()
+        NewsListResp(response).data
     } catch (ex: Exception) {
         Log.w("NEWS", "Could not load news list for $ticker")
         null

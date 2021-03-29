@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".fragments.stockInfo.NewsFragment"
+    tools:context=".fragments.news.NewsFragment"
     android:background="@color/white">
 
     <TextView

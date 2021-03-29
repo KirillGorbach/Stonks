@@ -1,6 +1,6 @@
 package com.example.stonks.api
 
-import com.example.stonks.fragments.stockInfo.util.News
+import com.example.stonks.fragments.news.util.News
 import org.json.JSONObject
 
 class StockResponse(js:String): JSONObject(js) {
