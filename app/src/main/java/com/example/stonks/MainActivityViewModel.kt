@@ -58,7 +58,7 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
             withContext(Dispatchers.Main) {
                 data.value = stocks
                 setSearchData(searchState)
-                // остальное можно загрузить потом
+                // остальное можно загрузить потом, поэтому говорим, что данные готовы
                 dataLoaded.value = true
                 initFavorites()
                 initImages()
@@ -93,9 +93,8 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
 
                 withContext(Dispatchers.Main) {
                     data.value = data.value?.map {
-                        if(it.ticker==ticker) {
+                        if(it.ticker==ticker)
                             it.image = image
-                        }
                         it
                     }?.toTypedArray()
                 }
@@ -144,6 +143,11 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
 
     /*
         ищем тикеры избранных в БД
+        
+        при изменении data.value recyclerView будет
+        перезагружать все данные
+        тикеры загрузятся быстро, поэтому применяем 
+        все изменения разом, а не по одному
      */
     private fun initFavorites() {
         GlobalScope.launch(Dispatchers.Default) {
