@@ -1,4 +1,4 @@
-package com.example.stonks.util
+package com.example.stonks.fragments.main.util
 
 import android.view.LayoutInflater
 import android.view.MotionEvent
@@ -18,7 +18,6 @@ import kotlin.math.abs
 // адаптер основного списка акций
 class StockRecyclerViewAdapter(
     private val onFavSelectedListener: OnFavSelectedListener,
-    private val onSwipedListener: OnSwipedListener,
     private val onStockClickedListener: OnStockClickedListener
 ) : RecyclerView.Adapter<StockRecyclerViewAdapter.ViewHolder>() {
 
@@ -69,49 +68,16 @@ class StockRecyclerViewAdapter(
                 onFavSelectedListener.onFavStateChanged(stock.ticker)
             }
 
-            setOnTouchListener(getOnSwipeListener())
             setOnClickListener { onStockClickedListener.onStockClicked(stock.ticker) }
         }
 
 
-        /*
-            ловим свайпы на каждом элементе
-            т.к. RcyclerView сам отлавливает onTouch,
-            приходится делать свайпы только на его элементах
-         */
-        private var gesturePrevX: Float? = null
-        private var gesturePrevY: Float? = null
-
-        private fun getOnSwipeListener(): View.OnTouchListener =
-            View.OnTouchListener { v, event ->
-                v.performClick()
-                if (event.action == MotionEvent.ACTION_DOWN) {
-                    gesturePrevX = event?.x
-                    gesturePrevY = event?.y
-                } else if (event.action == MotionEvent.ACTION_UP) {
-                    val deltaX = event?.x?.minus(gesturePrevX!!)
-                    val deltaY = event?.y?.minus(gesturePrevY!!)
-                    if (deltaX!=null && deltaY!=null){
-                        if (abs(deltaX) > abs(deltaY) && abs(deltaX) > swipeThreshold){
-                            if (deltaX > 0)
-                                onSwipedListener.onSwipeLeft()
-                            else
-                                onSwipedListener.onSwipeRight()
-                        }
-                    }
-                }
-                return@OnTouchListener true
-            }
     }
 
     interface OnFavSelectedListener {
         fun onFavStateChanged(position: String)
     }
 
-    interface OnSwipedListener {
-        fun onSwipeLeft()
-        fun onSwipeRight()
-    }
 
     interface OnStockClickedListener {
         fun onStockClicked(ticker: String)

@@ -8,8 +8,8 @@ import android.util.Log
 import com.example.stonks.MainActivity
 import com.example.stonks.constants.mostActivesList
 import com.example.stonks.constants.myMBOUMAPIKey
-import com.example.stonks.util.News
-import com.example.stonks.util.Stock
+import com.example.stonks.fragments.stockInfo.util.News
+import com.example.stonks.fragments.main.util.Stock
 import java.lang.Exception
 import java.net.HttpURLConnection
 import java.net.URL

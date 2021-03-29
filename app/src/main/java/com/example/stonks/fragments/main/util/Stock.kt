@@ -1,4 +1,4 @@
-package com.example.stonks.util
+package com.example.stonks.fragments.main.util
 
 import android.graphics.Bitmap
 import android.graphics.Color

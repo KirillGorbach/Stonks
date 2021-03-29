@@ -10,6 +10,7 @@ import com.example.stonks.api.getStocks
 import com.example.stonks.database.AppDatabase
 import com.example.stonks.database.icons.IconEntity
 import com.example.stonks.database.tickers.FavoriteTickerEntity
+import com.example.stonks.fragments.main.util.Stock
 import com.example.stonks.util.*
 import kotlinx.coroutines.*
 import java.io.ByteArrayOutputStream
@@ -141,28 +142,17 @@ class MainActivityViewModel : ViewModel() {
 
     /*
         ищем тикеры избранных в БД
-
      */
     private fun initFavorites() {
         GlobalScope.launch(Dispatchers.Default) {
             val favDao = database?.favoriteTickerDao()
-//            val dbTickers = favDao?.getFavorites()
-//            withContext(Dispatchers.Main) {
-//                data.value = data.value?.map { stock ->
-//                    if(dbTickers?.find { it.ticker==stock.ticker }!=null)
-//                        stock.isFavorite=true
-//                    stock
-//                }?.toTypedArray()
-//            } TODO TEST IT
-
-            favDao?.getFavorites()?.forEach { tickerEntity ->
-                withContext(Dispatchers.Main) {
-                    data.value = data.value?.map {
-                        if (it.ticker==tickerEntity.ticker)
-                            it.isFavorite=true
-                        it
-                    }?.toTypedArray()
-                }
+            val dbTickers = favDao?.getFavorites()
+            withContext(Dispatchers.Main) {
+                data.value = data.value?.map { stock ->
+                    if(dbTickers?.find { it.ticker==stock.ticker }!=null)
+                        stock.isFavorite=true
+                    stock
+                }?.toTypedArray()
             }
         }
     }
@@ -179,11 +169,10 @@ class MainActivityViewModel : ViewModel() {
         }
     }
 
-    fun deleteDB() {
+
+    override fun onCleared() {
+        super.onCleared()
         AppDatabase.destroyDatabase()
-    }
-    fun reinitDB() {
-        database = AppDatabase.getAppDatabase(MainActivity.applicationContext())
     }
 
     /*

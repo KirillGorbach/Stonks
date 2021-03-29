@@ -1,4 +1,4 @@
-package com.example.stonks
+package com.example.stonks.util
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -12,31 +12,35 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import com.example.stonks.MainActivity
+import com.example.stonks.MainActivityViewModel
+import com.example.stonks.R
 import com.example.stonks.constants.*
-import com.example.stonks.util.StockRecyclerViewAdapter
+import com.example.stonks.fragments.main.util.StockRecyclerViewAdapter
 import kotlin.math.abs
 
 
 
 /*
     Класс, отвечаюший за набор элементов на экране
+    Создан для того, чтобы действия с элементами могли не зависеть
+    от одного фрагмента
     Основная задача - корректно отображать viewModel.searchState
  */
 @SuppressLint("ClickableViewAccessibility")
 class MainContentHolder(
     view: View,
     private val context: Context,
+    private val onStockClickedListener: StockRecyclerViewAdapter.OnStockClickedListener,
     private val viewModel: MainActivityViewModel
-) : StockRecyclerViewAdapter.OnFavSelectedListener,
-    StockRecyclerViewAdapter.OnSwipedListener {
+) : StockRecyclerViewAdapter.OnFavSelectedListener {
 
     // нужно применять сортировку среди всех или только среди избранных
     var showFavList = false
 
     // из-за кликабельности элементов списка адаптер требует интерфейсы
-    var adapter = MainActivity.getInstance()?.let {
-        StockRecyclerViewAdapter(this, this, it)
-    }
+    var adapter =
+        StockRecyclerViewAdapter(this, onStockClickedListener)
 
     var stockRecyclerView: RecyclerView = view.findViewById(R.id.stock_list)
 
@@ -154,14 +158,6 @@ class MainContentHolder(
         viewModel.setSearchData(viewModel.searchState)
     }
 
-    override fun onSwipeLeft() {
-        setFavoriteNotChosen()
-    }
-
-    override fun onSwipeRight() {
-        setFavoriteChosen()
-    }
-
     // ловим свайпы на тулбаре
     private var gesturePrevX: Float? = null
     private var gesturePrevY: Float? = null
@@ -178,9 +174,9 @@ class MainContentHolder(
                 if (deltaX!=null && deltaY!=null){
                     if (abs(deltaX) > abs(deltaY) && abs(deltaX) > swipeThresholdShort){
                         if (deltaX > 0)
-                            this.onSwipeLeft()
+                            this.setFavoriteNotChosen()
                         else
-                            this.onSwipeRight()
+                            this.setFavoriteChosen()
                     }
                 }
             }

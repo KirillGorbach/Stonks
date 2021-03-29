@@ -5,7 +5,7 @@ import com.example.stonks.R
 const val priceFormat = "%.2f$"
 
 // параметры веб-запросов
-const val myMBOUMAPIKey = "demo"
+const val myMBOUMAPIKey = "demo"//"WiL0bVeR0CaiSOA4Cn3HReGWFSM57uhOf3Qx66RxhzXgwlNZYSDm9zIAXUzI"
 const val mostActivesList = "most_actives"
 const val dayGainersList = "day_gainers"
 const val dayLosersList = "day_losers"

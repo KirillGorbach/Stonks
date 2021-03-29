@@ -1,7 +1,6 @@
 package com.example.stonks.api
 
-import com.example.stonks.util.News
-import org.json.JSONArray
+import com.example.stonks.fragments.stockInfo.util.News
 import org.json.JSONObject
 
 class StockResponse(js:String): JSONObject(js) {
@@ -35,6 +34,6 @@ class NewsListResp(js: String): JSONObject(js) {
 }
 
 class NewsResp(js: String): JSONObject(js) {
-    val title = this.optString("title")
-    val link = this.optString("link")
+    val title: String = this.optString("title")
+    val link: String = this.optString("link")
 }

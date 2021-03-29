@@ -1,4 +1,4 @@
-package com.example.stonks.util
+package com.example.stonks.fragments.stockInfo.util
 
 import android.content.Intent
 import android.net.Uri
@@ -37,6 +37,7 @@ class NewsRecyclerViewAdapter: RecyclerView.Adapter<NewsRecyclerViewAdapter.View
             title.text = news.title
             title.setOnClickListener {
                 val url = Intent(Intent.ACTION_VIEW)
+                url.flags = Intent.FLAG_ACTIVITY_NEW_TASK
                 url.data = Uri.parse(news.link)
                 MainActivity.applicationContext().startActivity(url)
             }

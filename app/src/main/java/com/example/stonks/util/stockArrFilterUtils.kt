@@ -1,5 +1,6 @@
 package com.example.stonks.util
 
+import com.example.stonks.fragments.main.util.Stock
 
 
 // регистронезависимый поиск по тикеру и имени компании

@@ -1,118 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
-    tools:context=".MainActivity"
-    android:configChanges="orientation|screenSize">
+    tools:context=".MainActivity">
 
-    <com.google.android.material.appbar.AppBarLayout
+    <FrameLayout
+        android:id="@+id/container"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-        android:fitsSystemWindows="true">
-        <com.google.android.material.appbar.CollapsingToolbarLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_scrollFlags="scroll|snap"
-            android:background="@color/design_default_color_primary_variant">
-                <SearchView
-                    android:id="@+id/search_input"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    android:cursorVisible="true"
-                    android:queryHint="@string/search"
-                    android:singleLine="true"
-                    android:textColor="@color/black"
-                    android:iconifiedByDefault="false"
-                    android:textSize="@dimen/search_text_size"
-                    android:layout_marginTop="@dimen/search_top_margin"/>
-        </com.google.android.material.appbar.CollapsingToolbarLayout>
-
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
-
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_scrollFlags="enterAlwaysCollapsed">
-            <Button
-                android:id="@+id/all_stocks_btn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/main_buttons_margin"
-                android:text="@string/stocks"
-                android:textColor="@color/black"
-                android:background="@color/transparent"
-                android:textAppearance="@style/Theme.MyBotton"/>
-
-            <Button
-                android:id="@+id/favorite_btn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/main_buttons_margin"
-                android:text="@string/favorites"
-                android:textColor="@color/grey"
-                android:background="@color/transparent"
-                android:textAppearance="@style/Theme.MyBotton"/>
-        </androidx.appcompat.widget.Toolbar>
-
-    </com.google.android.material.appbar.AppBarLayout>
+        android:layout_height="match_parent"/>
 
 
-    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        android:id="@+id/refresh"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/stock_list_side_margin"
-        android:layout_marginTop="@dimen/stock_list_top_margin"
-        android:layout_marginRight="@dimen/stock_list_side_margin">
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/stock_list"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
-    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <TextView
-            android:id="@+id/loading_label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            android:text="@string/loading"
-            android:textSize="@dimen/loading_txt_size"
-            android:textColor="@color/warning_info_text_color"/>
-        <TextView
-            android:id="@+id/no_stocks_found"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            android:text="@string/no_stocks_found"
-            android:textSize="@dimen/no_stocks_found_txt_size"
-            android:textColor="@color/warning_info_text_color"
-            android:visibility="gone"/>
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-<!--    <fragment-->
-<!--        android:id="@+id/info_fragment"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="match_parent"-->
-<!--        class="com.example.stonks.fragments.StockInfoFragment"/>-->
-
-
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+</FrameLayout>
