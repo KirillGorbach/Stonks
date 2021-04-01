@@ -5,12 +5,15 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatDelegate
+import androidx.appcompat.widget.SwitchCompat
 import androidx.lifecycle.ViewModelProvider
 import com.example.stonks.MainActivity
 import com.example.stonks.MainActivityViewModel
 import com.example.stonks.R
 import com.example.stonks.fragments.main.util.StockRecyclerViewAdapter
 import com.example.stonks.util.MainContentHolder
+import kotlinx.coroutines.*
 
 
 class MainFragment: Fragment(),
@@ -18,27 +21,36 @@ class MainFragment: Fragment(),
 
     lateinit var mainContentHolder: MainContentHolder
     lateinit var viewModel: MainActivityViewModel
-    lateinit var viewMain: View
+    lateinit var myView: View
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         retainInstance = true
-        viewMain = inflater.inflate(R.layout.fragment_main, container, false)
+        myView = inflater.inflate(R.layout.fragment_main, container, false)
 
         if (activity!=null && context!=null) {
             viewModel = ViewModelProvider(requireActivity()).get(MainActivityViewModel::class.java)
             mainContentHolder =
                     MainContentHolder(
-                            viewMain,
+                            myView,
                             requireContext(),
                             this,
                             viewModel
                     )
         }
 
+        val themeSwitch = myView.findViewById<SwitchCompat>(R.id.theme_switch)
+        themeSwitch.isChecked =
+            AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES
+
+        themeSwitch.setOnCheckedChangeListener { _, _ ->
+            MainActivity.getFragmentListener().changeTheme()
+        }
+
+
         initViewModel()
-        return viewMain
+        return myView
     }
 
     override fun onSaveInstanceState(outState: Bundle) {

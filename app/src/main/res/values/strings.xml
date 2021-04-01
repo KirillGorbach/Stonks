@@ -8,4 +8,5 @@
     <string name="no_stocks_found">No stocks found</string>
     <string name="no_news_found">No news found</string>
     <string name="could_not_get_the_link">Error loading this page</string>
+    <string name="dark_theme">Dark theme</string>
 </resources>
