@@ -1,5 +1,6 @@
 package com.example.stonks.constants
 
+import androidx.appcompat.app.AppCompatDelegate
 import com.example.stonks.R
 
 const val priceFormat = "%.2f$"
@@ -12,8 +13,8 @@ const val dayLosersList = "day_losers"
 const val deltaInterval = "1h"
 
 
-const val colorLabelChosen = R.color.black
-const val colorLabelNotChosen = R.color.grey
+const val colorLabelChosen = R.color.toolbar_text_color_chosen
+const val colorLabelNotChosen = R.color.toolbar_text_color_not_chosen
 
 const val sizeLabelChosen = 25.0F
 const val sizeLabelNotChosen = sizeLabelChosen - 5.0F

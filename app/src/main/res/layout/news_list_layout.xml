@@ -16,7 +16,7 @@
             android:layout_height="wrap_content"
             android:text="7 things NOT to buy with your $1,400 stimulus check"
             style="@style/TextAppearance.AppCompat.Headline"
-            android:textColor="@color/blue"
+            android:textColor="@color/link_text_color"
             android:layout_margin="@dimen/text_margin"/>
     </androidx.cardview.widget.CardView>
 

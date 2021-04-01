@@ -1,28 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".fragments.news.NewsFragment"
-    android:background="@color/fragment_backgrownd_color"
-    android:fitsSystemWindows="true">
+    tools:context=".fragments.webview.WebViewFragment"
+    android:background="@color/white"
+    android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/no_news_found"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/no_news_found"
-        android:textSize="@dimen/loading_txt_size"
-        android:textColor="@color/warning_info_text_color"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"/>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/fragment_news_heading"
+        android:id="@+id/fragment_webview_heading"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/purple_700"
@@ -30,7 +19,7 @@
         app:layout_constraintLeft_toLeftOf="parent">
 
         <ImageButton
-            android:id="@+id/back_btn"
+            android:id="@+id/webview_back_btn"
             android:layout_width="@dimen/back_arrow_side"
             android:layout_height="@dimen/back_arrow_side"
             android:scaleType="centerCrop"
@@ -40,9 +29,10 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"/>
+
         <TextView
-            android:id="@+id/fragment_name"
-            android:text="AAPL NEWS"
+            android:id="@+id/webview_fragment_name"
+            android:text="Apple buying..."
             android:textAppearance="@style/TextAppearance.AppCompat.Headline"
             android:textColor="@color/white"
             android:layout_width="wrap_content"
@@ -53,18 +43,28 @@
             app:layout_constraintLeft_toLeftOf="parent"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/news_recyclerview"
+    <WebView
+        android:id="@+id/webview"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/fragment_news_heading"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        android:layout_marginTop="@dimen/stock_list_top_margin"
-        android:layout_marginLeft="@dimen/stock_list_side_margin"
-        android:layout_marginRight="@dimen/stock_list_side_margin"
-        android:layout_marginBottom="20dp"
-        android:paddingBottom="?android:attr/actionBarSize"/>
+        android:layout_height="match_parent"
+        app:layout_constraintTop_toBottomOf="@id/fragment_webview_heading"
+        android:visibility="visible"/>
 
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cant_load_label_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            android:text="@string/could_not_get_the_link"
+            android:textSize="@dimen/loading_txt_size"
+            android:textColor="@color/warning_info_text_color"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>

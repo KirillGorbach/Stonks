@@ -45,15 +45,15 @@ class MainContentHolder(
     var stockRecyclerView: RecyclerView = view.findViewById(R.id.stock_list)
 
     val searchInput: SearchView = view.findViewById(R.id.search_input)
-    val labelFavStocks: Button = view.findViewById(R.id.favorite_btn)
-    val labelAllStocks: Button = view.findViewById(R.id.all_stocks_btn)
+    private val labelFavStocks: Button = view.findViewById(R.id.favorite_btn)
+    private val labelAllStocks: Button = view.findViewById(R.id.all_stocks_btn)
     val labelLoading: TextView = view.findViewById(R.id.loading_label)
     val labelNoFound: TextView = view.findViewById(R.id.no_stocks_found)
 
-    val toolbar: androidx.appcompat.widget.Toolbar = view.findViewById(R.id.toolbar)
+    private val toolbar: androidx.appcompat.widget.Toolbar = view.findViewById(R.id.toolbar)
 
     // обновление данных по всайпу вверх
-    val swipeRefreshLayout: SwipeRefreshLayout =
+    private val swipeRefreshLayout: SwipeRefreshLayout =
         view.findViewById(R.id.refresh)
 
 
@@ -73,7 +73,7 @@ class MainContentHolder(
     }
 
     // ставим фильтр на избранные
-    fun setFavoriteChosen() {
+    private fun setFavoriteChosen() {
         showFavList = true
         setLabelChosen(labelFavStocks)
         setLabelNotChosen(labelAllStocks)
@@ -86,7 +86,7 @@ class MainContentHolder(
         }
     }
     //снимаем фильтр на избранные
-    fun setFavoriteNotChosen() {
+    private fun setFavoriteNotChosen() {
         showFavList = false
         setLabelChosen(labelAllStocks)
         setLabelNotChosen(labelFavStocks)

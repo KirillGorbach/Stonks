@@ -134,7 +134,7 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
                             )
                         }
                     } catch (ex: Exception) {
-                        ex.message?.let { it1 -> Log.e("IMAGELOAD", it1) }
+                        ex.message?.let { it1 -> Log.w("IMAGELOAD", it1) }
                     }
                 }
             }

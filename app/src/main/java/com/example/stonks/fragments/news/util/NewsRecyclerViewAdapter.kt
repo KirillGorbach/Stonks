@@ -1,8 +1,5 @@
 package com.example.stonks.fragments.news.util
 
-import android.content.Context
-import android.content.Intent
-import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,8 +9,8 @@ import com.example.stonks.MainActivity
 import com.example.stonks.R
 
 class NewsRecyclerViewAdapter(
-        private val context: Context
-): RecyclerView.Adapter<NewsRecyclerViewAdapter.ViewHolder>() {
+    private val ticker: String
+) : RecyclerView.Adapter<NewsRecyclerViewAdapter.ViewHolder>() {
 
     private var values: Array<News> = emptyArray()
 
@@ -39,10 +36,8 @@ class NewsRecyclerViewAdapter(
         fun bind(news: News) {
             title.text = news.title
             title.setOnClickListener {
-                val url = Intent(Intent.ACTION_VIEW)
-                url.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-                url.data = Uri.parse(news.link)
-                context.startActivity(url)
+                MainActivity.getFragmentListener()
+                    .startWebViewFragment(news.link, ticker, news.title)
             }
         }
     }

@@ -20,6 +20,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 
+
 const val TAG_TITLES = "titles"
 
 class NewsFragment(
@@ -45,7 +46,7 @@ class NewsFragment(
 
         val recyclerView = myView.findViewById<RecyclerView>(R.id.news_recyclerview)
         recyclerView.layoutManager = LinearLayoutManager(context)
-        adapter = context?.let { NewsRecyclerViewAdapter(it) }!!
+        adapter = context?.let { NewsRecyclerViewAdapter(this.ticker) }!!
         recyclerView.adapter = adapter
 
         if (newsArray.isEmpty()) fetchNews()

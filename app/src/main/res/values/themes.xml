@@ -11,6 +11,8 @@
         <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
+
+        <item name="android:textColorHint">@color/white</item>
         <!-- Customize your theme here. -->
     </style>
 
@@ -24,8 +26,12 @@
         <item name="windowNoTitle">true</item>
     </style>
 
-    <style name="Theme.Stonks.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+    <style name="Theme.Stonks.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
 
     <style name="Theme.Stonks.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="AppBarLayoutStile" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
+
+    <style name="SearchViewStyle" parent="Widget.AppCompat.SearchView"/>
 
 </resources>

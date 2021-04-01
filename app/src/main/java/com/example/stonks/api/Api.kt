@@ -29,7 +29,7 @@ fun getImage(ticker: String): Bitmap? {
         BitmapFactory.decodeStream(input)
     } catch (ex: Exception) {
         Log.w("IMAGELOAD", "Unable to load $ticker icon")
-        Log.e("IMAGELOAD", ex.toString())
+        Log.w("IMAGELOAD", ex.toString())
         null
     }
 }
@@ -66,7 +66,7 @@ fun getStocks(): Array<Stock>? {
     try {
         resActives = URL(urlActives).readText()
     } catch (ex: Exception) {
-        Log.w("ERROR", "Error getting data from https://mboum.com")
+        Log.w("GETTINGSTOCKS", "Error getting data from https://mboum.com")
         return null
     }
 

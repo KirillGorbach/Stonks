@@ -12,13 +12,13 @@
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        android:theme="@style/AppBarLayoutStile"
         android:fitsSystemWindows="true">
         <com.google.android.material.appbar.CollapsingToolbarLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_scrollFlags="scroll|snap"
-            android:background="@color/design_default_color_primary_variant">
+            android:background="@color/my_favorite_color">
             <SearchView
                 android:id="@+id/search_input"
                 android:layout_width="match_parent"
@@ -29,15 +29,16 @@
                 android:cursorVisible="true"
                 android:queryHint="@string/search"
                 android:singleLine="true"
-                android:textColor="@color/black"
+                android:textColor="@color/white"
+
                 android:iconifiedByDefault="false"
                 android:textSize="@dimen/search_text_size"
-                android:layout_marginTop="@dimen/search_top_margin"/>
+                android:layout_marginTop="@dimen/search_top_margin"
+                style="@style/SearchViewStyle"/>
         </com.google.android.material.appbar.CollapsingToolbarLayout>
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
-
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_scrollFlags="enterAlwaysCollapsed">

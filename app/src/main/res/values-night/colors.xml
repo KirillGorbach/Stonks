@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="warning_info_text_color">@color/white</color>
+
+    <color name="toolbar_text_color_chosen">@color/white</color>
+    <color name="toolbar_text_color_not_chosen">@color/white</color>
+    <color name="link_text_color">@color/white</color>
+
+    <color name="list_item_bkgd_color">@color/grey</color>
+    <color name="fragment_backgrownd_color">@color/black</color>
+    <color name="toolbar_background_color">@color/grey</color>
+</resources>
