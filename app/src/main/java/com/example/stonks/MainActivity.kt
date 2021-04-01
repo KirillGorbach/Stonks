@@ -30,8 +30,6 @@ ActivityFragmentListener{
     private val mainFragmentTag = "MainFragment"
     private val newsFragmentTag = "NewsFragment"
     private val webViewFragmentTag = "WebViewFragment"
-    private val nightModeTag = "NightMode"
-    private val sharedPreferencesTag = "MyPrefs"
     private val themeTag = "MainTheme"
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -50,13 +48,12 @@ ActivityFragmentListener{
 
     private fun initTheme() {
         val prefs = getPreferences(MODE_PRIVATE)
-        if (prefs.contains(themeTag)) {
+        if (prefs.contains(themeTag))
             AppCompatDelegate.setDefaultNightMode(
-                prefs.getInt(themeTag, AppCompatDelegate.MODE_NIGHT_NO)
-            )
-        } else {
+                prefs.getInt(themeTag, AppCompatDelegate.MODE_NIGHT_NO))
+        else
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-        }
+
     }
 
     // если мы в новостях, возвращаемся на главный
@@ -105,23 +102,23 @@ ActivityFragmentListener{
     override fun changeTheme() {
         val prefs = getPreferences(MODE_PRIVATE)
         var theme: Int = AppCompatDelegate.MODE_NIGHT_NO
+
         if (prefs.contains(themeTag)){
             theme = prefs.getInt(themeTag, AppCompatDelegate.MODE_NIGHT_NO)
         }
+
         val editor = prefs.edit()
         when(theme) {
-            AppCompatDelegate.MODE_NIGHT_NO -> editor.putInt(themeTag, AppCompatDelegate.MODE_NIGHT_YES)
-            else -> editor.putInt(themeTag, AppCompatDelegate.MODE_NIGHT_NO)
+            AppCompatDelegate.MODE_NIGHT_NO -> {
+                editor.putInt(themeTag, AppCompatDelegate.MODE_NIGHT_YES)
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+            }
+            else -> {
+                editor.putInt(themeTag, AppCompatDelegate.MODE_NIGHT_NO)
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+            }
         }
         editor.apply()
-        recreate()
-
-        //другой способ
-//        finish()
-//        startActivity(intent)
-//        overridePendingTransition(0, 0)
     }
-
-
 
 }
