@@ -1,5 +1,6 @@
 package com.example.stonks.fragments.main.util
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
@@ -11,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.stonks.R
 import com.example.stonks.constants.favoriteOffImage
 import com.example.stonks.constants.favoriteOnImage
+import com.example.stonks.constants.iconImageNotFound
 import com.example.stonks.constants.swipeThreshold
 import kotlin.math.abs
 
@@ -56,7 +58,19 @@ class StockRecyclerViewAdapter(
             stockDelta.text = stock.delta
             stockDelta.setTextColor(stock.deltaColor)
 
-            stock.image?.let { icon.setImageBitmap(stock.image) }
+            /*
+                recyclerView имеет баг - при изменении содержимого
+                иногда дефолтная картинка из stock_list_item заменяется
+                на одну из загруженных
+                например - иногда CSCO (без картинки) получает логотип
+                акции F и т.п.
+                поэтому устанавливаем дефолтную картинку программно
+             */
+            if (stock.image!=null) {
+                icon.setImageBitmap(stock.image)
+            } else {
+                icon.setImageResource(iconImageNotFound)
+            }
 
             if(stock.isFavorite)
                 favBtn.setImageResource(favoriteOnImage)

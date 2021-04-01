@@ -20,6 +20,10 @@ const val sizeLabelNotChosen = sizeLabelChosen - 5.0F
 
 const val favoriteOnImage = R.drawable.star_big_on
 const val favoriteOffImage = R.drawable.star_big_off
+const val iconImageNotFound = R.drawable.icon_not_found_picture_xhdpi
+
 
 const val swipeThreshold = 60
 const val swipeThresholdShort = 40
+
+
