@@ -63,13 +63,25 @@ class MainContentHolder(
 
         labelFavStocks.setOnClickListener{setFavoriteChosen()}
         labelAllStocks.setOnClickListener{setFavoriteNotChosen()}
-        setFavoriteNotChosen()
 
 
         stockRecyclerView.layoutManager = LinearLayoutManager(context)
         stockRecyclerView.adapter = adapter
 
         toolbar.setOnTouchListener(getOnSwipeListener())
+        when(viewModel.searchState) {
+MainActivityViewModel.SearchState.SEARCH -> {
+setFavoriteNotChosen()
+searchInput.setQuery(viewModel.currentSearchString, false)
+}
+MainActivityViewModel.SearchState.SEARCH_FAV -> {
+setFavoriteChosen()
+searchInput.setQuery(viewModel.currentSearchString, false)
+}
+MainActivityViewModel.SearchState.FAVORITE -> setFavoriteChosen()
+MainActivityViewModel.SearchState.ALL -> setFavoriteNotChosen()
+else -> setFavoriteNotChosen()
+}
     }
 
     // ставим фильтр на избранные
