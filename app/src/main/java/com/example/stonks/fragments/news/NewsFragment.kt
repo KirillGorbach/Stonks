@@ -113,7 +113,7 @@ class NewsFragment(
                 with(chart.axisLeft) {
                     typeface = android.graphics.Typeface.DEFAULT
                     textColor = ContextCompat.getColor(requireContext(), colorChartText)
-                    textSize = 20f
+                    textSize = chartTextSize
                     axisMaximum = responceData.maxOf { it } + 1f
                     axisMinimum = responceData.minOf { it } - 1f
                     setDrawGridLines(true)
