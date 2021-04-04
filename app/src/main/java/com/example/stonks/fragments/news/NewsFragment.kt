@@ -15,6 +15,7 @@ import com.example.stonks.MainActivity
 import com.example.stonks.R
 import com.example.stonks.api.getGraphicData
 import com.example.stonks.api.getNews
+import com.example.stonks.constants.chartTextSize
 import com.example.stonks.constants.colorChartBackground
 import com.example.stonks.constants.colorChartText
 import com.example.stonks.constants.statisticsShowDays
@@ -113,7 +114,7 @@ class NewsFragment(
                 with(chart.axisLeft) {
                     typeface = android.graphics.Typeface.DEFAULT
                     textColor = ContextCompat.getColor(requireContext(), colorChartText)
-                    textSize = 20f
+                    textSize = chartTextSize
                     axisMaximum = responceData.maxOf { it } + 1f
                     axisMinimum = responceData.minOf { it } - 1f
                     setDrawGridLines(true)

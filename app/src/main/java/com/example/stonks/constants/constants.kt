@@ -23,6 +23,8 @@ const val colorChartBackground = R.color.chart_background_color
 const val colorChartText = R.color.chart_text_color
 const val colorChartLine = R.color.chart_line_color
 
+const val chartTextSize = 15f
+
 const val sizeLabelChosen = 25.0F
 const val sizeLabelNotChosen = sizeLabelChosen - 5.0F
 

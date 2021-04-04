@@ -60,6 +60,7 @@ fun getStockWithPrice(stock: Stock): Stock? {
     } catch (e: Exception) {
         //Это сообщение появляется слишком часто
 //        Log.w("LOAD", "Could not load stock price: ${stock.ticker}")
+        e.printStackTrace()
         null
     }
 }
