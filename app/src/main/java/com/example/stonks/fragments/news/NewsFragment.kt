@@ -99,29 +99,29 @@ class NewsFragment(
                         .toMutableList()
 
             withContext(Dispatchers.Main) {
-
-                val chart = myView.findViewById<LineChart>(R.id.chart)
-
-                chart.legend.isEnabled = false
-                chart.xAxis.isEnabled = false
-                chart.axisRight.isEnabled = false
-                chart.description.isEnabled = false
-
-                chart.setBackgroundColor(
-                        ContextCompat.getColor(requireContext(), colorChartBackground)
-                )
-
-                with(chart.axisLeft) {
-                    typeface = android.graphics.Typeface.DEFAULT
-                    textColor = ContextCompat.getColor(requireContext(), colorChartText)
-                    textSize = chartTextSize
-                    axisMaximum = responceData.maxOf { it } + 1f
-                    axisMinimum = responceData.minOf { it } - 1f
-                    setDrawGridLines(true)
-                    isGranularityEnabled = false
-                }
-
                 try {
+                    val chart = myView.findViewById<LineChart>(R.id.chart)
+
+                    chart.legend.isEnabled = false
+                    chart.xAxis.isEnabled = false
+                    chart.axisRight.isEnabled = false
+                    chart.description.isEnabled = false
+
+                    chart.setBackgroundColor(
+                            ContextCompat.getColor(requireContext(), colorChartBackground)
+                    )
+
+                    with(chart.axisLeft) {
+                        typeface = android.graphics.Typeface.DEFAULT
+                        textColor = ContextCompat.getColor(requireContext(), colorChartText)
+                        textSize = chartTextSize
+                        axisMaximum = responceData.maxOf { it } + 1f
+                        axisMinimum = responceData.minOf { it } - 1f
+                        setDrawGridLines(true)
+                        isGranularityEnabled = false
+                    }
+
+
                     // set data
                     chart.data = LineData(initDataset(responceData, requireContext()))
 
