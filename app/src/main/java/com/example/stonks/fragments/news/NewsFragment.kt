@@ -7,13 +7,22 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.TextView
+import androidx.cardview.widget.CardView
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.stonks.MainActivity
 import com.example.stonks.R
+import com.example.stonks.api.getGraphicData
 import com.example.stonks.api.getNews
+import com.example.stonks.constants.colorChartBackground
+import com.example.stonks.constants.colorChartText
+import com.example.stonks.constants.statisticsShowDays
 import com.example.stonks.fragments.news.util.News
 import com.example.stonks.fragments.news.util.NewsRecyclerViewAdapter
+import com.example.stonks.fragments.news.util.initDataset
+import com.github.mikephil.charting.charts.LineChart
+import com.github.mikephil.charting.data.LineData
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -27,6 +36,7 @@ class NewsFragment(
     private val ticker: String
 ): Fragment() {
 
+    private lateinit var myView: View
     private var newsArray: MutableList<News> = mutableListOf()
     private lateinit var adapter: NewsRecyclerViewAdapter
     lateinit var noNewsLabel: TextView
@@ -37,7 +47,7 @@ class NewsFragment(
     ): View? {
         retainInstance = true
 
-        val myView = inflater.inflate(R.layout.fragment_news, container, false)
+        myView = inflater.inflate(R.layout.fragment_news, container, false)
 
         val label = "$ticker NEWS"
         myView.findViewById<TextView>(R.id.fragment_name).text = label
@@ -56,6 +66,8 @@ class NewsFragment(
             MainActivity.getFragmentListener().backToMainFragment()
         }
 
+        initChartData()
+
         return myView
     }
 
@@ -71,6 +83,59 @@ class NewsFragment(
             }
         }
     }
+
+    /*
+    Отображаем динамику цены акции за последние две недели
+    Показываем в виде графика библиотеки MPAndroid
+ */
+    private fun initChartData() {
+        GlobalScope.launch(Dispatchers.Default) {
+            var responceData: MutableList<Float> = getGraphicData(ticker) ?: return@launch
+
+            if (responceData.size > statisticsShowDays)
+                responceData = responceData
+                        .subList(responceData.size - statisticsShowDays, responceData.size)
+                        .toMutableList()
+
+            withContext(Dispatchers.Main) {
+
+                val chart = myView.findViewById<LineChart>(R.id.chart)
+
+                chart.legend.isEnabled = false
+                chart.xAxis.isEnabled = false
+                chart.axisRight.isEnabled = false
+                chart.description.isEnabled = false
+
+                chart.setBackgroundColor(
+                        ContextCompat.getColor(requireContext(), colorChartBackground)
+                )
+
+                with(chart.axisLeft) {
+                    typeface = android.graphics.Typeface.DEFAULT
+                    textColor = ContextCompat.getColor(requireContext(), colorChartText)
+                    textSize = 20f
+                    axisMaximum = responceData.maxOf { it } + 1f
+                    axisMinimum = responceData.minOf { it } - 1f
+                    setDrawGridLines(true)
+                    isGranularityEnabled = false
+                }
+
+                try {
+                    // set data
+                    chart.data = LineData(initDataset(responceData, requireContext()))
+
+                    myView.findViewById<CardView>(R.id.news_chart_cardview)
+                            .visibility = View.VISIBLE
+
+                    /*
+                       requireContext при переходах между фрагментами
+                       иногда вызывает IllegalStateException из-за асинхронности
+                    */
+                } catch (ex:IllegalStateException){}
+            }
+        }
+    }
+
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)

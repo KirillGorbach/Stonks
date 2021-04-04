@@ -9,4 +9,5 @@
     <string name="no_news_found">No news found</string>
     <string name="could_not_get_the_link">Error loading this page</string>
     <string name="dark_theme">Dark theme</string>
+    <string name="chart_title">Price changes in 14 days, $</string>
 </resources>

@@ -6,9 +6,9 @@ import com.example.stonks.constants.priceFormat
 
 class Stock(val ticker: String,
             val companyName: String,
-            val price: String,
-            val delta: String,
-            val deltaColor: Int,
+            var price: String,
+            var delta: String,
+            var deltaColor: Int,
             var isFavorite: Boolean,
             var image: Bitmap?){
 
@@ -20,8 +20,8 @@ class Stock(val ticker: String,
     companion object {
         fun getStock(ticker: String,
                      companyName: String,
-                     price: Double,
-                     previousClosePrice: Double,
+                     price: Float,
+                     previousClosePrice: Float,
                      isFavorite: Boolean,
                      image: Bitmap?
         ): Stock {

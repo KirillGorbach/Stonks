@@ -26,4 +26,12 @@
 
     <dimen name="back_arrow_margin">10dp</dimen>
     <dimen name="back_arrow_side">40dp</dimen>
+
+
+    <dimen name="chart_cardview_height">200dp</dimen>
+    <dimen name="chart_cardview_margin">@dimen/stock_list_side_margin</dimen>
+    <dimen name="chart_title_size">20sp</dimen>
+    <dimen name="chart_title_margin">10dp</dimen>
+
+
 </resources>

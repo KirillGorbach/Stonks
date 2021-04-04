@@ -75,4 +75,10 @@ class WebViewFragment(
         }
     }
 
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        webView.saveState(outState)
+        super.onSaveInstanceState(outState)
+    }
+
 }

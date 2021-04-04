@@ -9,4 +9,9 @@
     <color name="list_item_bkgd_color">@color/grey</color>
     <color name="fragment_backgrownd_color">@color/black</color>
     <color name="toolbar_background_color">@color/grey</color>
+
+
+    <color name="chart_background_color">@color/black</color>
+    <color name="chart_line_color">@color/red</color>
+    <color name="chart_text_color">@color/white</color>
 </resources>

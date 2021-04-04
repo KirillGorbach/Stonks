@@ -6,9 +6,7 @@ import android.graphics.Bitmap
 import android.os.Environment
 import android.util.Log
 import androidx.lifecycle.*
-import com.example.stonks.api.getImage
-import com.example.stonks.api.getImageFromResourses
-import com.example.stonks.api.getStocks
+import com.example.stonks.api.*
 import com.example.stonks.database.AppDatabase
 import com.example.stonks.database.icons.IconEntity
 import com.example.stonks.database.tickers.FavoriteTickerEntity
@@ -49,7 +47,7 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
             var stocks: Array<Stock>? = null
             while (stocks == null) {
                 stocks = try {
-                    getStocks()
+                    getStockMainInfo()
                 } catch (ex: Exception) {
                     delay(1000)
                     null
@@ -57,11 +55,37 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
             }
             withContext(Dispatchers.Main) {
                 data.value = stocks
+                getStocksPrices()
                 setSearchData(searchState)
                 // остальное можно загрузить потом, поэтому говорим, что данные готовы
                 dataLoaded.value = true
                 initFavorites()
                 initImages()
+            }
+        }
+    }
+
+    private fun getStocksPrices() {
+        GlobalScope.launch(Dispatchers.Default) {
+            val oldData = data.value
+            oldData?.forEach { stock ->
+                GlobalScope.launch(Dispatchers.Default) {
+                    var newStock: Stock? = null
+                    while (newStock == null) {
+                        newStock = try {
+                            getStockWithPrice(stock)
+                        } catch (e: Exception) {
+                            delay(1000)
+                            null
+                        }
+                    }
+                    withContext(Dispatchers.Main) {
+                        data.value = data.value?.map {
+                            if (it.ticker == newStock.ticker) newStock
+                            else it
+                        }?.toTypedArray()
+                    }
+                }
             }
         }
     }

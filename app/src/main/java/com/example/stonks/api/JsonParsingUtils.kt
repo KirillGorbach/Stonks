@@ -6,9 +6,9 @@ import org.json.JSONObject
 class StockResponse(js:String): JSONObject(js) {
     val ticker: String = this.optString("symbol")
     val companyName: String = this.optString("shortName")
-    val price = this.optDouble("regularMarketPrice")
+    val price = this.optDouble("regularMarketPrice").toFloat()
     val regularMarketPreviousClose =
-        this.optDouble("regularMarketPreviousClose")
+        this.optDouble("regularMarketPreviousClose").toFloat()
 }
 
 class Resp(js: String): JSONObject(js) {
@@ -36,4 +36,9 @@ class NewsListResp(js: String): JSONObject(js) {
 class NewsResp(js: String): JSONObject(js) {
     val title: String = this.optString("title")
     val link: String = this.optString("link")
+}
+
+class FinnhubQuote(js: String): JSONObject(js) {
+    val currentPrice = this.optDouble("c").toFloat()
+    val previousPrice = this.optDouble("pc").toFloat()
 }
