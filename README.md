@@ -2,6 +2,15 @@
 
 Stonks - приложение для просмотра популярных акций.
 
+
+<div display="inline-block">
+<img src="https://thumb.cloud.mail.ru/weblink/thumb/xw1/k2MG/BJPahPkkZ/Screenshot_2021-04-04-22-09-44-181_com.example.stonks.jpg" margin="2px" width="200">
+<img src="https://thumb.cloud.mail.ru/weblink/thumb/xw1/k2MG/BJPahPkkZ/Screenshot_2021-04-04-22-09-49-890_com.example.stonks.jpg" margin="2px" width="200">
+<img src="https://thumb.cloud.mail.ru/weblink/thumb/xw1/k2MG/BJPahPkkZ/Screenshot_2021-04-04-22-10-04-896_com.example.stonks.jpg" margin="2px" width="200">
+</div>
+
+
+
 ### Функционал:
 
 * Загрузка акций с сайта mboum.com
